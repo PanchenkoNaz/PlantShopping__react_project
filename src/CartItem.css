@@ -240,4 +240,37 @@
     transition: background-color 0.3s ease;
     margin-top: 40px;
   }
+
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      padding: 10px;
+    }
+  
+    .cart-item-image {
+      width: 100px;
+      height: 100px;
+      margin-right: 20px;
+    }
+  
+    .cart-item-details {
+      flex: 1;
+    }
+  
+    .cart-item-actions {
+      display: flex;
+      align-items: center;
+    }
+  
+    .cart-item-actions button {
+      margin: 0 5px;
+    }
+  
+    .cart-summary {
+      margin-top: 20px;
+      text-align: right;
+    }
   
