@@ -294,15 +294,20 @@
 
 
 import { useState } from 'react';
-import { useDispatch } from 'react-redux'; // For Redux integration
-import { addItem } from './CartSlice'; // Redux action for adding items to cart
+import { useDispatch, useSelector } from 'react-redux'; // Для роботи з Redux
+import { addItem } from './CartSlice'; // Action для додавання в кошик
 import './ProductList.css';
-import CartItem from './CartItem'; // Component for the shopping cart
+import CartItem from './CartItem';
 
 function ProductList() {
-  const [showCart, setShowCart] = useState(false); // Toggle cart view
-  const [addedToCart, setAddedToCart] = useState({}); // Track added items
-  const dispatch = useDispatch(); // Redux dispatch
+  const [showCart, setShowCart] = useState(false); // Відображення кошика
+  const [addedToCart, setAddedToCart] = useState({}); // Стан доданих товарів (по ID)
+  const dispatch = useDispatch(); // Диспатчер для Redux
+  const cartItems = useSelector((state) => state.cart.items); // Отримуємо товари з кошика
+
+  // Підрахунок кількості товарів у кошику
+  const totalItemsInCart = cartItems.reduce((total, item) => total + item.quantity, 0);
+
 
   const plantsArray = [
         {
@@ -513,17 +518,17 @@ function ProductList() {
     ];
 
 
-  // Function to handle adding items to the cart
+  // Додавання товару до кошика
   const handleAddToCart = (plant) => {
-    dispatch(addItem(plant)); // Add to Redux state
+    dispatch(addItem(plant)); // Додаємо товар у Redux
     setAddedToCart((prevState) => ({
       ...prevState,
-      [plant.id]: true, // Mark this plant as added
+      [plant.id]: true, // Встановлюємо стан для конкретного товару
     }));
   };
 
-  const handleCartClick = () => setShowCart(true); // Show cart
-  const handleContinueShopping = () => setShowCart(false); // Hide cart
+  const handleCartClick = () => setShowCart(true); // Показати кошик
+  const handleContinueShopping = () => setShowCart(false); // Повернутися до покупок
 
   return (
     <div>
@@ -536,40 +541,36 @@ function ProductList() {
           />
           <a href="/" style={{ textDecoration: 'none' }}>
             <div>
-              <h3>Paradise Nursery</h3>
-              <i>Where Green Meets Serenity</i>
+              <h3 style={{ color: 'white' }}>Paradise Nursery</h3>
+              <i style={{ color: 'white' }}>Where Green Meets Serenity</i>
             </div>
           </a>
         </div>
-        <div className="nav-links">
-          <div>
-            <a href="#" onClick={() => setShowCart(false)}>
-              Plants
-            </a>
-          </div>
-          <div>
-            <a href="#" onClick={handleCartClick}>
-              <h1 className="cart">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 256 256"
-                  height="68"
-                  width="68"
-                >
-                  <circle cx="80" cy="216" r="12"></circle>
-                  <circle cx="184" cy="216" r="12"></circle>
-                  <path
-                    d="M42.3,72H221.7l-26.4,92.4A15.9,15.9,0,0,1,179.9,176H84.1a15.9,15.9,0,0,1-15.4-11.6L32.5,37.8A8,8,0,0,0,24.8,32H8"
-                    fill="none"
-                    stroke="#000"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                  ></path>
-                </svg>
-              </h1>
-            </a>
-          </div>
+        <div className="cart-container">
+          <a href="#" onClick={handleCartClick}>
+            <div className="cart-icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 256 256"
+                height="68"
+                width="68"
+              >
+                <circle cx="80" cy="216" r="12"></circle>
+                <circle cx="184" cy="216" r="12"></circle>
+                <path
+                  d="M42.3,72H221.7l-26.4,92.4A15.9,15.9,0,0,1,179.9,176H84.1a15.9,15.9,0,0,1-15.4-11.6L32.5,37.8A8,8,0,0,0,24.8,32H8"
+                  fill="none"
+                  stroke="#faf9f9"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                ></path>
+              </svg>
+              {totalItemsInCart > 0 && (
+                <span className="cart-count">{totalItemsInCart}</span>
+              )}
+            </div>
+          </a>
         </div>
       </div>
 
@@ -588,7 +589,8 @@ function ProductList() {
                     <p>Price: {plant.cost}</p>
                     <button
                       onClick={() => handleAddToCart(plant)}
-                      disabled={addedToCart[plant.id]}
+                      disabled={addedToCart[plant.id]} // Перевірка, чи товар вже доданий
+                      className={addedToCart[plant.id] ? 'added-button' : 'add-button'}
                     >
                       {addedToCart[plant.id] ? 'Added to Cart' : 'Add to Cart'}
                     </button>
