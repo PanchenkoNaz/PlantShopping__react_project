@@ -1,4 +1,3 @@
-import React from 'react';
 import { createRoot } from 'react-dom/client'; // Імпорт createRoot
 import { Provider } from 'react-redux'; // Імпорт Provider для Redux
 import store from './store'; // Імпорт Redux Store
