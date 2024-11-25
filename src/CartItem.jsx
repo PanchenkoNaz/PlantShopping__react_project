@@ -1,38 +1,31 @@
-import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addItem, removeItem, updateQuantity } from './CartSlice'; // Import Redux actions
+import { removeItem, updateQuantity } from './CartSlice'; // Використовуються тільки ці функції
+import PropTypes from 'prop-types'; // Додано для перевірки пропсів
 import './CartItem.css';
-
 
 function CartItem({ onContinueShopping }) {
   const dispatch = useDispatch();
-  const cartItems = useSelector((state) => state.cart.items); // Get cart items from Redux store
+  const cartItems = useSelector((state) => state.cart.items);
 
-  // Calculate total cost of all items
   const calculateTotal = () =>
     cartItems.reduce((total, item) => total + item.quantity * parseFloat(item.cost.slice(1)), 0);
 
-  // Handle checkout action
   const handleCheckoutShopping = () => {
     alert('Functionality to be added for future reference');
   };
 
-  // Increment item quantity
   const incrementQuantity = (item) => {
     dispatch(updateQuantity({ id: item.id, quantity: item.quantity + 1 }));
   };
 
-  // Decrement item quantity
   const decrementQuantity = (item) => {
     if (item.quantity > 1) {
       dispatch(updateQuantity({ id: item.id, quantity: item.quantity - 1 }));
     } else {
-      // If quantity is 1, remove the item
       dispatch(removeItem({ id: item.id }));
     }
   };
 
-  // Remove item from cart
   const removeItemFromCart = (item) => {
     dispatch(removeItem({ id: item.id }));
   };
@@ -70,5 +63,9 @@ function CartItem({ onContinueShopping }) {
     </div>
   );
 }
+
+CartItem.propTypes = {
+  onContinueShopping: PropTypes.func.isRequired, // Пропс перевіряється як функція
+};
 
 export default CartItem;
