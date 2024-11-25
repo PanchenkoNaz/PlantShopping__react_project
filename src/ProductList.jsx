@@ -293,7 +293,7 @@
 
 
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux'; // For Redux integration
 import { addItem } from './CartSlice'; // Redux action for adding items to cart
 import './ProductList.css';
