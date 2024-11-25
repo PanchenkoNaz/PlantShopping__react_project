@@ -31,7 +31,8 @@
   height: 100vh;
   width: 100vw;
  top: 100px;
-  backdrop-filter: blur(4px);
+  /* backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px); */
   background-color: rgba(0,0,0,0.5);
   gap: 20px;
 }
@@ -107,7 +108,8 @@
   /* Enable vertical scrolling */
   z-index: 2;
   /* Ensure it's above landing page content */
-  backdrop-filter: blur(5px);
+  /* backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px); */
 }
 
 .product-list-container.visible {
